@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="457.0" style="-fx-background-color: DDDDDD;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.ModifyPartScreenController">
+   <children>
+      <Label layoutX="43.0" layoutY="36.0" text="Modify Part">
+         <font>
+            <Font name="Verdana Bold" size="15.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="inHouseRadio" layoutX="175.0" layoutY="39.0" mnemonicParsing="false" onAction="#inHouseHandler" text="In-House">
+         <toggleGroup>
+            <ToggleGroup fx:id="partOrigin" />
+         </toggleGroup>
+      </RadioButton>
+      <RadioButton fx:id="outsourcedRadio" layoutX="270.0" layoutY="39.0" mnemonicParsing="false" onAction="#outsourcedRadioHandler" selected="true" text="Outsourced" toggleGroup="$partOrigin" />
+      <Button fx:id="modPartSaveButton" layoutX="287.0" layoutY="299.0" mnemonicParsing="false" onAction="#modPartSaveHandler" onMouseClicked="#saveModifyPartHandler" prefHeight="25.0" prefWidth="52.0" text="Save" />
+      <Button fx:id="modPartCancelButton" layoutX="348.0" layoutY="299.0" mnemonicParsing="false" onAction="#modPartCancelHandler" prefHeight="25.0" prefWidth="63.0" text="Cancel" />
+      <TextField fx:id="modPartIDField" editable="false" layoutX="175.0" layoutY="76.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
+      <TextField fx:id="modPartNameField" layoutX="175.0" layoutY="112.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
+      <TextField fx:id="modPartInvField" layoutX="175.0" layoutY="148.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
+      <TextField fx:id="modPartPriceField" layoutX="175.0" layoutY="185.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
+      <TextField fx:id="modPartDynamicField" layoutX="175.0" layoutY="261.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
+      <TextField fx:id="modPartMaxField" layoutX="175.0" layoutY="223.0" prefHeight="27.0" prefWidth="92.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
+      <Label layoutX="288.0" layoutY="230.0" text="Min" />
+      <TextField fx:id="modPartMinField" layoutX="319.0" layoutY="223.0" prefHeight="27.0" prefWidth="92.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
+      <VBox layoutX="43.0" layoutY="81.0" prefHeight="229.0" prefWidth="120.0" spacing="20.0">
+         <children>
+            <Label text="ID" />
+            <Label text="Name" />
+            <Label text="Inv" />
+            <Label text="Price" />
+            <Label text="Max" />
+            <Label fx:id="modPartCompanyMachineID" text="Company Name" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
