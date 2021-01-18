@@ -1,226 +1,200 @@
 package View_Controller;
 
-import Model.Inventory;
-import Model.InHouse;
-import Model.Outsourced;
-import javafx.event.ActionEvent;
+import Model.*;
+import java.net.URL;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.stage.Stage;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.Node;
-import javafx.scene.control.*;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Random;
+import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
 import java.util.ResourceBundle;
 
 /**
- * Class controller adds Parts
+ * Controller for the 'Add Part' screen
  */
 public class AddPartController implements Initializable {
-    Inventory inventory;
-    private boolean isOutsourced = true;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    }
-
-    public AddPartController() {
-    }
-
-    public AddPartController(Inventory inventory) { this.inventory = inventory; }
-
+    //Parts
+    @FXML private TextField addPartIDField;
     @FXML private TextField addPartNameField;
-    @FXML private TextField addPartInvField;
+    @FXML private TextField addPartInventoryField;
     @FXML private TextField addPartPriceField;
-    @FXML private TextField addPartDynamicField;
     @FXML private TextField addPartMaxField;
     @FXML private TextField addPartMinField;
-    @FXML private Label addPartCompanyMachineID;
-    @FXML private Button addPartSaveButton;
-    @FXML private Button addPartCancelButton;
+    @FXML private TextField DynamicField;
+    @FXML private Label DynamicLabel;
 
-    @FXML void inHouseHandler(ActionEvent event) {
-        isOutsourced = false;
-        addPartCompanyMachineID.setText("Machine ID");
+    @FXML private RadioButton inHouseRadio;
+    @FXML private RadioButton outsourcedRadio;
+    @FXML private Label errorLabel;
+    @FXML private Button SaveButton;
+    @FXML private Button CancelButton;
+
+    private Inventory inv;
+
+    /**
+     * Class constructor
+     * @param inv inventory of parts and products
+     */
+    public AddPartController(Inventory inv) {
+        this.inv = inv;
     }
 
-    @FXML void outsourcedRadioHandler(ActionEvent event) {
-        isOutsourced = true;
-        addPartCompanyMachineID.setText("Company Name");
+    /**
+     * Initializes the controller class
+     * @param url location used for the root object
+     * @param rb resources used for the root object
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        inHouseRadio.setSelected(true);
+        addPartIDField.setText(generatePartID());
+        DynamicLabel.setText("Machine ID");
     }
 
-    @FXML void addPartSaveHandler(ActionEvent event) throws IOException {
-
-        Random rand = new Random();
-        int id = rand.nextInt(30);
-
-        if (!isOutsourced) {
-
-            InHouse newInhousePart = new InHouse(0, "", 0, 0, 0, 0, 0);
-
-            if (isValid(addPartNameField.getText(), addPartInvField.getText(), addPartPriceField.getText(), addPartMaxField.getText(), addPartMinField.getText(), addPartDynamicField.getText())) {
-                newInhousePart.setID(id);
-
-                if (!addPartNameField.getText().isEmpty()) {
-                    newInhousePart.setName(addPartNameField.getText());
-                }
-                if (!addPartInvField.getText().isEmpty()) {
-                    newInhousePart.setStock(Integer.parseInt(addPartInvField.getText()));
-                }
-                if (!addPartPriceField.getText().isEmpty()) {
-                    newInhousePart.setPrice(Double.parseDouble(addPartPriceField.getText()));
-                }
-                if (!addPartMaxField.getText().isEmpty()) {
-                    newInhousePart.setMax(Integer.parseInt(addPartMaxField.getText()));
-                }
-                if (!addPartMinField.getText().isEmpty()) {
-                    newInhousePart.setMin(Integer.parseInt(addPartMinField.getText()));
-                }
-                if (!addPartDynamicField.getText().isEmpty()) {
-                    newInhousePart.setMachineID(Integer.parseInt(addPartDynamicField.getText()));
-                }
-
-                Stage stage;
-                Parent root;
-                stage=(Stage) addPartSaveButton.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/View_Controller/MainScreen.fxml"));
-                root =loader.load();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
-            }
-
-        } else {
-
-            Outsourced newOutsourcedPart = new Outsourced(0, "", 0, 0, 0, 0, "");
-
-            if (isValid(addPartNameField.getText(), addPartInvField.getText(), addPartPriceField.getText(), addPartMaxField.getText(), addPartMinField.getText(), addPartDynamicField.getText())) {
-
-                newOutsourcedPart.setID(id);
-                if (!addPartNameField.getText().isEmpty()) {
-                    newOutsourcedPart.setName(addPartNameField.getText());
-                }
-                if (!addPartPriceField.getText().isEmpty()) {
-                    newOutsourcedPart.setPrice(Double.parseDouble(addPartPriceField.getText()));
-                }
-                if (!addPartInvField.getText().isEmpty()) {
-                    newOutsourcedPart.setStock(Integer.parseInt(addPartInvField.getText()));
-                }
-                if (!addPartMinField.getText().isEmpty()) {
-                    newOutsourcedPart.setMin(Integer.parseInt(addPartMinField.getText()));
-                }
-                if (!addPartMaxField.getText().isEmpty()) {
-                    newOutsourcedPart.setMax(Integer.parseInt(addPartMaxField.getText()));
-                }
-                if (!addPartDynamicField.getText().isEmpty()) {
-                    newOutsourcedPart.setCompanyName(addPartDynamicField.getText());
-                }
-
-                Stage stage;
-                Parent root;
-                stage=(Stage) addPartSaveButton.getScene().getWindow();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/View_Controller/MainScreen.fxml"));
-                root =loader.load();
-                Scene scene = new Scene(root);
-                stage.setScene(scene);
-                stage.show();
-            }
+    /**
+     * Generates unique part ID by adding 1 to the largest part ID
+     * @return part ID
+     */
+    private String generatePartID() {
+        if (!inv.getAllParts().isEmpty()) {
+            int i = 1;
+            for (Part p : inv.getAllParts())
+                if (p.getPartID() > i)
+                    i = p.getPartID();
+            return Integer.toString(i + 1);
+        }
+        else {
+            return "1";
         }
     }
 
-    @FXML void addPartCancelHandler(ActionEvent event) throws IOException
-    {
-        Parent mainScreenParent = FXMLLoader.load(getClass().getResource("/View_Controller/MainScreen.fxml"));
-        Scene mainScene = new Scene(mainScreenParent);
-
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(mainScene);
-        window.show();
+    /**
+     * Changes label to machine ID
+     * @param event mouse input In-House radio button is selected by user
+     */
+    @FXML private void selectInHouse(MouseEvent event) {
+        DynamicLabel.setText("Machine ID");
     }
 
-    public boolean isValid( String partName, String partStock, String partPrice, String partMax, String partMin, String partOrigin  ) {
-        String errorMessage = "";
-        Integer intMin = null, intMax = null;
-        boolean isValid;
+    /**
+     * Changes label to company name
+     * @param event mouse input outsourced radio button is selected by user
+     */
+    @FXML private void selectOutsourced(MouseEvent event) {
+        DynamicLabel.setText("Company Name");
+    }
 
-        if (partName == null || partName.isEmpty()) {
-            errorMessage += ("Enter a part name\n");
+    /**
+     * Checks that the user input is valid
+     * @param event mouse input when save button is clicked by user
+     */
+    @FXML private void checkInput(MouseEvent event) {
+        if (addPartNameField.getText().trim().isEmpty()) {
+            errorLabel.setText("Enter a name");
+            return;
         }
-
         try {
-            intMin =  Integer.parseInt(partMin);
-        } catch (NumberFormatException e) {
-            errorMessage += ("Min must be a number\n");
+            if (addPartInventoryField.getText().trim().isEmpty()
+                    || Integer.parseInt(addPartInventoryField.getText().trim()) <= 0)
+                throw new Exception();
+        } catch (Exception e) {
+            errorLabel.setText("Enter an inventory amount");
+            return;
         }
-
         try {
-            intMax = Integer.parseInt(partMax);
-        } catch (NumberFormatException e) {
-            errorMessage += ("Max must be a number\n");
+            if (addPartPriceField.getText().trim().isEmpty()
+                    || Double.parseDouble(addPartPriceField.getText().trim()) <= 0)
+                throw new Exception();
+        } catch (Exception e) {
+            errorLabel.setText("Enter a price");
+            return;
         }
-
         try {
-            if(intMin > intMax) {
-                errorMessage += ("Min must be less than max\n");
-            }
-        } catch (NullPointerException e) {
-            errorMessage += ("Enter a min and max\n");
+            if (addPartMinField.getText().trim().isEmpty()
+                    || Integer.parseInt(addPartMinField.getText().trim()) <= 0)
+                throw new Exception();
+        } catch (Exception e) {
+            errorLabel.setText("Enter a min amount");
+            return;
         }
-
         try {
-            int intInv = Integer.parseInt(partStock);
-
-            if (intMax != null && intMin != null) {
-                if(intInv < intMin || intInv > intMax) {
-                    errorMessage += ("Inv must be between min and max\n");
-                }
-            } else {
-                errorMessage += ("Enter an Inv amount\n");
-            }
-        } catch (NumberFormatException e) {
-            errorMessage += ("Inv must be a number\n");
+            if (addPartMaxField.getText().trim().isEmpty()
+                    || Integer.parseInt(addPartMaxField.getText().trim()) <= 0)
+                throw new Exception();
+        } catch (Exception e) {
+            errorLabel.setText("Enter a max amount");
+            return;
         }
-
+        if (Integer.parseInt(addPartMinField.getText().trim()) > Integer.parseInt(addPartMaxField.getText().trim())) {
+            errorLabel.setText("Min is greater than max");
+            return;
+        }
+        if (Integer.parseInt(addPartInventoryField.getText().trim()) > Integer.parseInt(addPartMaxField.getText().trim())) {
+            errorLabel.setText("Inventory is greater than max");
+            return;
+        }
+        if (Integer.parseInt(addPartInventoryField.getText().trim()) < Integer.parseInt(addPartMinField.getText().trim())) {
+            errorLabel.setText("Inventory is less than min");
+            return;
+        }
         try {
-            double price = Double.parseDouble(partPrice);
-            if (price < 0) {
-                errorMessage += ("Price cannot be less than 0.00");
-            }
-        } catch (NumberFormatException e) {
-            errorMessage += ("Enter a price\n");
+            if (inHouseRadio.isSelected() && (DynamicField.getText().trim().isEmpty()
+                    || Integer.parseInt(DynamicField.getText().trim()) <= 0))
+                throw new Exception();
         }
-
-        if (!isOutsourced) {
-            if (!partOrigin.isEmpty()) {
-                try {
-                    Integer.parseInt(partOrigin);
-                } catch (NumberFormatException e) {
-                    errorMessage += ("Machine ID must be a number");
-                }
-            } else {
-                errorMessage += ("Enter a Machine ID\n");
-            }
-        } else {
-            if (partOrigin.isEmpty()) {
-                errorMessage += ("Enter a Company Name\n");
-            }
+        catch(Exception e) {
+            errorLabel.setText("Enter a Machine ID number");
+            return;
         }
-
-        if (errorMessage.isEmpty()) {
-            isValid = true;
-        } else {
-            isValid = false;
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("ADD PART ERROR");
-            alert.setHeaderText("Error");
-            alert.setContentText(errorMessage);
-            alert.showAndWait();
+        if (outsourcedRadio.isSelected() && DynamicField.getText().trim().isEmpty()) {
+            errorLabel.setText("Enter a company name");
+            return;
         }
+        savePart(event);
+    }
+    /**
+     * Saves part to inventory
+     * @param event mouse input when save button is clicked by user
+     */
+    private void savePart(MouseEvent event) {
+        if (inHouseRadio.isSelected()) {
+            InHouse part = new InHouse(Integer.parseInt(addPartIDField.getText().trim()), addPartNameField.getText().trim(), Double.parseDouble(addPartPriceField.getText().trim()), Integer.parseInt(addPartInventoryField.getText().trim()), Integer.parseInt(addPartMinField.getText().trim()), Integer.parseInt(addPartMaxField.getText().trim()), Integer.parseInt(DynamicField.getText().trim()));
+            inv.addPart(part);
+        }
+        if (outsourcedRadio.isSelected()) {
+            Outsourced part = new Outsourced(Integer.parseInt(addPartIDField.getText().trim()), addPartNameField.getText().trim(), Double.parseDouble(addPartPriceField.getText().trim()), Integer.parseInt(addPartInventoryField.getText().trim()), Integer.parseInt(addPartMinField.getText().trim()), Integer.parseInt(addPartMaxField.getText().trim()), DynamicField.getText().trim());
+            inv.addPart(part);
+        }
+        returnToMain(event);
+    }
 
-        return isValid;
+    /**
+     * Returns user to main screen
+     * @param event mouse input returns user to main screen
+     */
+    @FXML private void returnToMain(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View_Controller/Main.fxml"));
+            MainController controller = new MainController(inv);
+            loader.setController(controller);
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }
