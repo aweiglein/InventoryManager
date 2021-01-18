@@ -1,25 +1,45 @@
 package Model;
 
 /**
- * Class creates Outsourced Parts
+ * Creates Outsourced parts
  */
 public class Outsourced extends Part {
+
     private String companyName;
 
-    public Outsourced(int ID, String name, double price, int stock, int min, int max, String companyName) {
-        super(ID, name, price, stock, min, max);
+    /**
+     * Class constructor
+     * @param partID part ID
+     * @param name part name
+     * @param price price of the product
+     * @param stock amount of inventory
+     * @param min minimum amount
+     * @param max maximum amount
+     * @param companyName company name
+     */
+    public Outsourced(int partID, String name, double price, int stock, int min, int max, String companyName) {
+        setPartID(partID);
+        setName(name);
+        setPrice(price);
+        setStock(stock);
+        setMin(min);
+        setMax(max);
         this.companyName = companyName;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
+    /**
+     * Getter for company name
+     * @return company name
+     */
     public String getCompanyName() {
         return companyName;
     }
 
-    public boolean isIncomplete() {
-        return (this.getID() == 0 || this.getName() == "" || this.getPrice() == 0 || this.getStock() == 0 || this.getMin() == 0 || this.getMax() == 0 || this.companyName == "");
+    /**
+     * Setter for company name
+     * @param companyName company name
+     */
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }
