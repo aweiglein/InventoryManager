@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.paint.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
@@ -13,38 +12,110 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="457.0" style="-fx-background-color: DDDDDD;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.AddPartController">
+<AnchorPane prefHeight="362.0" prefWidth="405.0" style="-fx-background-color: DDDDDD;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="43.0" layoutY="36.0" text="Add Part">
+      <Pane layoutX="9.0" layoutY="9.0" prefHeight="344.0" prefWidth="387.0" style="-fx-border-width: 1px; -fx-border-style: solid; -fx-border-radius: 10px; -fx-border-color: BBBBBB;" />
+      <Label layoutX="42.0" layoutY="36.0" text="Add Part">
          <font>
-            <Font name="Verdana Bold" size="15.0" />
+            <Font name="Verdana Bold" size="14.0" />
+         </font></Label>
+      <RadioButton fx:id="inHouseRadio" layoutX="190.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#selectInHouse" text="In House">
+         <font>
+            <Font size="11.0" />
          </font>
-      </Label>
-      <RadioButton fx:id="inHouseRadio" layoutX="175.0" layoutY="39.0" mnemonicParsing="false" onAction="#inHouseHandler" text="In-House">
          <toggleGroup>
-            <ToggleGroup fx:id="partOrigin" />
+            <ToggleGroup fx:id="Radio" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="outsourcedRadio" layoutX="270.0" layoutY="39.0" mnemonicParsing="false" onAction="#outsourcedRadioHandler" selected="true" text="Outsourced" toggleGroup="$partOrigin" />
-      <Button fx:id="addPartSaveButton" layoutX="287.0" layoutY="299.0" mnemonicParsing="false" onAction="#addPartSaveHandler" prefHeight="25.0" prefWidth="52.0" text="Save" />
-      <Button fx:id="addPartCancelButton" layoutX="348.0" layoutY="299.0" mnemonicParsing="false" onAction="#addPartCancelHandler" prefHeight="25.0" prefWidth="63.0" text="Cancel" />
-      <TextField editable="false" layoutX="175.0" layoutY="76.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" text="Auto Gen - Disabled" />
-      <TextField fx:id="addPartNameField" layoutX="175.0" layoutY="112.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <TextField fx:id="addPartInvField" layoutX="175.0" layoutY="148.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <TextField fx:id="addPartPriceField" layoutX="175.0" layoutY="185.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <TextField fx:id="addPartDynamicField" layoutX="175.0" layoutY="261.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <TextField fx:id="addPartMaxField" layoutX="175.0" layoutY="223.0" prefHeight="27.0" prefWidth="92.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <Label layoutX="288.0" layoutY="230.0" text="Min" />
-      <TextField fx:id="addPartMinField" layoutX="319.0" layoutY="223.0" prefHeight="27.0" prefWidth="92.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <VBox layoutX="43.0" layoutY="81.0" prefHeight="229.0" prefWidth="120.0" spacing="20.0">
-         <children>
-            <Label text="ID" />
-            <Label text="Name" />
-            <Label text="Inv" />
-            <Label text="Price" />
-            <Label text="Max" />
-            <Label fx:id="addPartCompanyMachineID" text="Company Name" />
-         </children>
-      </VBox>
+      <RadioButton fx:id="outsourcedRadio" layoutX="286.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#selectOutsourced" text="Outsourced" toggleGroup="$Radio">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </RadioButton>
+      <TextField fx:id="addPartIDField" editable="false" layoutX="129.0" layoutY="76.0" prefWidth="236.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="addPartNameField" layoutX="129.0" layoutY="113.0" prefWidth="236.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="addPartInventoryField" layoutX="129.0" layoutY="152.0" prefWidth="236.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="addPartPriceField" layoutX="129.0" layoutY="190.0" prefWidth="236.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="addPartMinField" layoutX="129.0" layoutY="228.0" prefWidth="90.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="addPartMaxField" layoutX="275.0" layoutY="228.0" prefWidth="90.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="DynamicField" layoutX="129.0" layoutY="266.0" prefWidth="236.0">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </TextField>
+      <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="80.0" text="Part ID" textAlignment="RIGHT">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="117.0" text="Name" textAlignment="RIGHT">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="156.0" text="Inventory" textAlignment="RIGHT">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER_RIGHT" layoutX="43.0" layoutY="194.0" text="Price" textAlignment="RIGHT">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER_RIGHT" layoutX="239.0" layoutY="231.0" text="Max" textAlignment="RIGHT">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label layoutX="43.0" layoutY="231.0" text="Min" textAlignment="RIGHT">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="DynamicLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="43.0" layoutY="270.0" text="   " textAlignment="RIGHT">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Button fx:id="SaveButton" layoutX="255.0" layoutY="302.0" mnemonicParsing="false" onMouseClicked="#checkInput" prefHeight="24.0" prefWidth="46.0" text="Save">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Button>
+      <Button fx:id="CancelButton" layoutX="311.0" layoutY="302.0" mnemonicParsing="false" onMouseClicked="#returnToMain" prefHeight="24.0" prefWidth="53.0" text="Cancel">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Button>
+      <Label fx:id="errorLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="43.0" layoutY="305.0" text="   " textAlignment="RIGHT" textFill="#930000">
+         <font>
+            <Font name="System Italic" size="11.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
