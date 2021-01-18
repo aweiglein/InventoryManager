@@ -4,76 +4,159 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * Class creates Products
+ * Creates Products
  */
 public class Product {
-
     private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
-    private int ID;
+    private int productID;
     private String name;
     private double price;
     private int stock;
     private int min;
     private int max;
 
-    public Product(int ID, String name, double price, int stock, int min, int max) {
-        this.ID = ID;
-        this.name = name;
-        this.price = price;
-        this.stock = stock;
-        this.min = min;
-        this.max = max;
+    /**
+     * Class constructor
+     * @param productID product ID
+     * @param name product name
+     * @param price price of the product
+     * @param stock amount of inventory
+     * @param min minimum amount
+     * @param max maximum amount
+     */
+    public Product(int productID, String name, double price, int stock, int min, int max) {
+        setProductID(productID);
+        setName(name);
+        setPrice(price);
+        setStock(stock);
+        setMin(min);
+        setMax(max);
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    /**
+     * Getter for product ID
+     * @return product ID
+     */
+    public int getProductID() {
+        return productID;
     }
-    public int getID() {
-        return ID;
+
+    /**
+     * Setter for product ID
+     * @param ProductID product ID
+     */
+    public void setProductID(int ProductID) {
+        this.productID = ProductID;
     }
-    public void setName(String name) {
-        this.name = name;
-    }
+
+    /**
+     * Getter for product name
+     * @return product name
+     */
     public String getName() {
         return name;
     }
-    public void setPrice(double price) {
-        this.price = price;
+
+    /**
+     * Setter for product name
+     * @param name product name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
+
+    /**
+     * Getter for product price
+     * @return product price
+     */
     public double getPrice() {
         return price;
     }
-    public void setStock(int stock) {
-        this.stock = stock;
+
+    /**
+     * Setter for product price
+     * @param price product price
+     */
+    public void setPrice(double price) {
+        this.price = price;
     }
+
+    /**
+     * Getter for amount in stock
+     * @return amount in stock
+     */
     public int getStock() {
         return stock;
     }
-    public void setMin(int min) {
-        this.min = min;
+
+    /**
+     * Setter for amount in stock
+     * @param stock amount in stock
+     */
+    public void setStock(int stock) {
+        this.stock = stock;
     }
+
+    /**
+     * Getter for minimum
+     * @return minimum
+     */
     public int getMin() {
         return min;
     }
-    public void setMax(int max) {
-        this.max = max;
+
+    /**
+     * Setter for minimum
+     * @param min minimum
+     */
+    public void setMin(int min) {
+        this.min = min;
     }
+
+    /**
+     * Getter for maximum
+     * @return maximum
+     */
     public int getMax() {
         return max;
     }
-    public void addAssociatedPart(Part part) {
-        associatedParts.add(part);
+
+    /**
+     * Setter for maximum
+     * @param max maximum
+     */
+    public void setMax(int max) {
+        this.max = max;
     }
 
-    public boolean deleteAssociatedPart(Part selectedAssociatedPart) { associatedParts.remove(selectedAssociatedPart);
-        return true;
+    /**
+     * Adds associated part
+     * @param selectedPart part to be added
+     */
+    public void addAssociatedPart(Part selectedPart) {
+        associatedParts.add(selectedPart);
     }
 
+    /**
+     * Deletes associated part
+     * @param selectedPart part to be deleted
+     * @return boolean value
+     */
+    public boolean deleteAssociatedPart(Part selectedPart) {
+        for (int i = 0; i < associatedParts.size(); i++) {
+            if (associatedParts.get(i).getPartID() == selectedPart.getPartID()) {
+                associatedParts.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Getter for all associated parts
+     * @return list of all associated parts
+     */
     public ObservableList<Part> getAllAssociatedParts() {
         return associatedParts;
-    }
-
-    public boolean isIncomplete() {
-        return (this.getID() == 0 || this.getName() == "" || this.getPrice() == 0 || this.getStock() == 0 || this.getMin() == 0 || this.getMax() == 0);
     }
 }
