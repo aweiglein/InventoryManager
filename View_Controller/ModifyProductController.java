@@ -1,219 +1,277 @@
 package View_Controller;
 
-import Model.Inventory;
-import Model.Product;
-import Model.Part;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import Model.*;
+import java.net.URL;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.stage.Stage;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.Node;
+import javafx.stage.Stage;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Optional;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ResourceBundle;
+import java.util.Optional;
 
 /**
- * Class controller modifies Products
+ * Controller for the 'Modify Product' screen
  */
 public class ModifyProductController implements Initializable {
 
-    Product product;
-    private int index;
-
-    @Override public void initialize(URL location, ResourceBundle resources) {
-        generateUnassociatedPartsTable();
-    }
-
-    public ModifyProductController() {
-    }
-
+    //Products
     @FXML private TextField modProductIDField;
     @FXML private TextField modProductNameField;
-    @FXML private TextField modProductInvField;
+    @FXML private TextField modProductInventoryField;
     @FXML private TextField modProductPriceField;
     @FXML private TextField modProductMaxField;
     @FXML private TextField modProductMinField;
-    @FXML private Button modProductSaveButton;
-    @FXML private Button modProductCancelButton;
-    @FXML private TableView<Part> addPartsTable;
-    @FXML private TableColumn<Part, Integer> modProductAddPartsTableIDCol;
-    @FXML private TableColumn<Part, String> modProductAddPartsTableNameCol;
-    @FXML private TableColumn<Part, Integer> modProductAddPartsTableInvCol;
-    @FXML private TableColumn<Part, Double> modProductAddPartsTablePriceCol;
-    @FXML private Button modProductSearchButton;
-    @FXML private TextField modProductSearchField;
-    @FXML private Button modProductAddButton;
-    @FXML private TableView<Part> deletePartFromProductTable;
-    @FXML private TableColumn<Part, Integer> modProductRemovePartsTableIDCol;
-    @FXML private TableColumn<Part, String> modProductRemovePartsTableNameCol;
-    @FXML private TableColumn<Part, Integer> modProductRemovePartsTableInvCol;
-    @FXML private TableColumn<Part, Double> modProductRemovePartsTablePriceCol;
-    @FXML private Button modProductRemoveButton;
+    //Parts
+    @FXML private TextField partSearch;
+    @FXML private TableView<Part> partTable;
+    @FXML private TableColumn<Part, Integer> partIDCol;
+    @FXML private TableColumn<Part, String> partNameCol;
+    @FXML private TableColumn<Part, Integer> partInventoryCol;
+    @FXML private TableColumn<Part, Double> partPriceCol;
+    //Associated Parts
+    @FXML private Button addAssociatedPartButton;
+    @FXML private Button removeAssociatedPartButton;
+    @FXML private TableView<Part> associatedPartTable;
+    @FXML private TableColumn<Part, Integer> associatedPartIDCol;
+    @FXML private TableColumn<Part, String> associatedPartNameCol;
+    @FXML private TableColumn<Part, Integer> associatedPartInventoryCol;
+    @FXML private TableColumn<Part, Double> associatedPartPriceCol;
 
+    @FXML private Label errorLabel;
+    @FXML private Button saveButton;
+    @FXML private Button cancelButton;
+
+    private Inventory inv;
+    private Product selectedProduct;
+    private ObservableList<Part> partsInventory = FXCollections.observableArrayList();
+    private ObservableList<Part> partsInventorySearch = FXCollections.observableArrayList();
+    private ObservableList<Part> associatedPartsInventory = FXCollections.observableArrayList();
+
+    /**
+     * Class constructor
+     * @param inv inventory of 'Parts' and 'Products'
+     */
+    public ModifyProductController(Inventory inv, Product selectedProduct) {
+        this.inv = inv;
+        this.selectedProduct = selectedProduct;
+    }
+
+    /**
+     * Initializes the controller class
+     * @param url location used for the root object
+     * @param rb resources used for the root object
+     */
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        fillData();
+        generateAssociatedPartsTable();
+        generatePartsTable();
+    }
+
+    /**
+     * Loads the form text fields with the variables of the selected product
+     */
+    private void fillData() {
+        this.modProductIDField.setText(Integer.toString(selectedProduct.getProductID()));
+        this.modProductNameField.setText(selectedProduct.getName());
+        this.modProductInventoryField.setText(Integer.toString(selectedProduct.getStock()));
+        this.modProductPriceField.setText(Double.toString(selectedProduct.getPrice()));
+        this.modProductMinField.setText(Integer.toString(selectedProduct.getMin()));
+        this.modProductMaxField.setText(Integer.toString(selectedProduct.getMax()));
+    }
+
+    /**
+     * Generates the associated parts table view
+     */
     private void generateAssociatedPartsTable() {
-        if (!product.getAllAssociatedParts().isEmpty()) {
-            deletePartFromProductTable.setItems(product.getAllAssociatedParts());
-            modProductRemovePartsTableIDCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
-            modProductRemovePartsTableNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-            modProductRemovePartsTableInvCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
-            modProductRemovePartsTablePriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-            deletePartFromProductTable.refresh();
+        associatedPartsInventory.setAll(selectedProduct.getAllAssociatedParts());
+        associatedPartTable.setItems(associatedPartsInventory);
+        associatedPartTable.refresh();
+    }
+
+    /**
+     * Generates the parts table view
+     */
+    private void generatePartsTable() {
+        partsInventory.setAll(inv.getAllParts());
+        partsInventory.removeAll(selectedProduct.getAllAssociatedParts());
+        partTable.setItems(partsInventory);
+        partTable.refresh();
+    }
+
+    /**
+     * Filters table view to show only the parts with matching ID or name
+     * @param event keyboard input when user types in search field
+     */
+    @FXML private void searchForPart(KeyEvent event) {
+        if (!partSearch.getText().trim().isEmpty()) {
+            partsInventorySearch.clear();
+            errorLabel.setText("");
+            for (Part p : partsInventory) {
+                if (p.getName().toLowerCase().contains(partSearch.getText().trim()))
+                    partsInventorySearch.add(p);
+                else if (Integer.toString(p.getPartID()).contains(partSearch.getText().trim()))
+                    partsInventorySearch.add(p);
+            }
+            if (partsInventorySearch.isEmpty())
+                errorLabel.setText("No parts found");
+            partTable.setItems(partsInventorySearch);
         }
-    }
-
-    private void generateUnassociatedPartsTable() {
-        addPartsTable.setItems(Inventory.getAllParts());
-        modProductAddPartsTableIDCol.setCellValueFactory(new PropertyValueFactory<>("ID"));
-        modProductAddPartsTableNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        modProductAddPartsTableInvCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        modProductAddPartsTablePriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-        addPartsTable.refresh();
-    }
-
-    @FXML void modProductAddHandler(ActionEvent event) {
-        Part selectedPart = addPartsTable.getSelectionModel().getSelectedItem();
-        product.addAssociatedPart(selectedPart);
-        generateAssociatedPartsTable();
-    }
-
-    @FXML void modProductCancelHandler(ActionEvent event) throws IOException {
-        Parent mainScreenParent = FXMLLoader.load(getClass().getResource("/View_Controller/MainScreen.fxml"));
-        Scene mainScene = new Scene(mainScreenParent);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(mainScene);
-        window.show();
-    }
-
-    @FXML void modProductRemoveHandler(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("CONFIRMATION");
-        alert.setHeaderText("Remove Part");
-        alert.setContentText("Are you sure you want to remove this part?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            Part partToDelete = deletePartFromProductTable.getSelectionModel().getSelectedItem();
-            product.deleteAssociatedPart(partToDelete);
-            generateAssociatedPartsTable();
+        else {
+            errorLabel.setText("");
+            partTable.setItems(partsInventory);
         }
+        partTable.refresh();
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    /**
+     * Adds associated part to selected product
+     * @param event mouse input when add associated part button is clicked by user
+     */
+    @FXML void addAssociatedPart(MouseEvent event) {
+        Part selectedPart = partTable.getSelectionModel().getSelectedItem();
+        if (partsInventory.isEmpty()) {
+            errorLabel.setText("No items available to add");
+            return;
+        }
+        else if (selectedPart == null) {
+            errorLabel.setText("Select an item");
+            return;
+        }
 
-        modProductIDField.setText(Integer.toString(product.getID()));
-        modProductNameField.setText(product.getName());
-        modProductInvField.setText(Integer.toString(product.getStock()));
-        modProductPriceField.setText(Double.toString(product.getPrice()));
-        modProductMaxField.setText(Integer.toString(product.getMax()));
-        modProductMinField.setText(Integer.toString(product.getMax()));
-
-        product.getAllAssociatedParts();
-        generateAssociatedPartsTable();
+        associatedPartsInventory.add(selectedPart);
+        associatedPartTable.setItems(associatedPartsInventory);
+        associatedPartTable.refresh();
+        partsInventory.remove(selectedPart);
+        partTable.setItems(partsInventory);
+        partTable.refresh();
+        partSearch.setText("");
     }
 
-    @FXML void modProductSaveHandler(ActionEvent event) throws IOException {
+    /**
+     * Removes associated part from selected product
+     * @param event mouse input when remove associated part button is clicked by user
+     */
+    @FXML void removeAssociatedPart(MouseEvent event) {
+        Part selectedPart = associatedPartTable.getSelectionModel().getSelectedItem();
+        if (associatedPartsInventory.isEmpty()) {
+            errorLabel.setText("No items available to remove");
+            return;
+        }
+        else if (selectedPart == null) {
+            errorLabel.setText("Select an item");
+            return;
+        }
 
-        index = Inventory.getAllProducts().indexOf(product);
+        partsInventory.add(selectedPart);
+        partTable.setItems(partsInventory);
+        partTable.refresh();
+        associatedPartsInventory.remove(selectedPart);
+        associatedPartTable.setItems(associatedPartsInventory);
+        associatedPartTable.refresh();
+        partSearch.setText("");
+    }
 
-        Product modifiedProduct = product;
+    /**
+     * Clears error message
+     */
+    @FXML private void clearError() {
+        errorLabel.setText("");
+    }
 
-        if (inventoryIsValid(modProductInvField.getText(), modProductMinField.getText(), modProductMaxField.getText())) {
-            modifiedProduct.setID(Integer.parseInt(modProductIDField.getText()));
-            if (!modProductNameField.getText().isEmpty()) {
-                modifiedProduct.setName(modProductNameField.getText());
-            }
-            if (!modProductPriceField.getText().isEmpty()) {
-                modifiedProduct.setPrice(Double.parseDouble(modProductPriceField.getText()));
-            }
-            if (!modProductInvField.getText().isEmpty()) {
-                modifiedProduct.setStock(Integer.parseInt(modProductInvField.getText()));
-            }
-            if (!modProductMinField.getText().isEmpty()) {
-                modifiedProduct.setMin(Integer.parseInt(modProductMinField.getText()));
-            }
-            if (!modProductMaxField.getText().isEmpty()) {
-                modifiedProduct.setMax(Integer.parseInt(modProductMaxField.getText()));
-            }
+    /**
+     * Checks that the user input is valid
+     * @param event mouse input when save button is clicked by user
+     */
+    @FXML private void checkInput(MouseEvent event) {
+        if (modProductNameField.getText().trim().isEmpty()) {
+            errorLabel.setText("Enter a name");
+            return;
+        }
+        try {
+            if (modProductInventoryField.getText().trim().isEmpty() || Integer.parseInt(modProductInventoryField.getText().trim()) <= 0)
+                throw new Exception();
+        } catch (Exception e) {
+            errorLabel.setText("Enter an inventory amount");
+            return;
+        }
+        try {
+            if (modProductPriceField.getText().trim().isEmpty() || Double.parseDouble(modProductPriceField.getText().trim()) <= 0)
+                throw new Exception();
+        } catch (Exception e) {
+            errorLabel.setText("Enter a price");
+            return;
+        }
+        try {
+            if (modProductMinField.getText().trim().isEmpty() || Integer.parseInt(modProductMinField.getText().trim()) <= 0)
+                throw new Exception();
+        } catch (Exception e) {
+            errorLabel.setText("Enter a min amount");
+            return;
+        }
+        try {
+            if (modProductMaxField.getText().trim().isEmpty() || Integer.parseInt(modProductMaxField.getText().trim()) <= 0)
+                throw new Exception();
+        } catch (Exception e) {
+            errorLabel.setText("Enter a max amount");
+            return;
+        }
+        if (Integer.parseInt(modProductMinField.getText().trim()) > Integer.parseInt(modProductMaxField.getText().trim())) {
+            errorLabel.setText("Min is greater than max");
+            return;
+        }
+        if (Integer.parseInt(modProductInventoryField.getText().trim()) > Integer.parseInt(modProductMaxField.getText().trim())) {
+            errorLabel.setText("Inventory is greater than max");
+            return;
+        }
+        if (Integer.parseInt(modProductInventoryField.getText().trim()) < Integer.parseInt(modProductMinField.getText().trim())) {
+            errorLabel.setText("Inventory is less than min");
+            return;
+        }
+        saveProduct(event);
+    }
 
-            modifiedProduct.getAllAssociatedParts();
-            Inventory.updateProduct(index, modifiedProduct);
+    /**
+     * Saves product to inventory
+     * @param event mouse input when save button is clicked by user
+     */
+    private void saveProduct(MouseEvent event) {
+        Product product = new Product(Integer.parseInt(modProductIDField.getText().trim()), modProductNameField.getText().trim(), Double.parseDouble(modProductPriceField.getText().trim()), Integer.parseInt(modProductInventoryField.getText().trim()), Integer.parseInt(modProductMinField.getText().trim()), Integer.parseInt(modProductMaxField.getText().trim()));
+        for (Part p : associatedPartsInventory)
+            product.addAssociatedPart(p);
+        inv.updateProduct(product);
 
-            Stage stage;
-            Parent root;
-            stage=(Stage) modProductSaveButton.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View_Controller/MainScreen.fxml"));
-            root =loader.load();
+        returnToMain(event);
+    }
+
+    /**
+     * Returns user to 'Main Screen'
+     * @param event mouse input returns user to main screen
+     */
+    @FXML private void returnToMain(MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/View_Controller/Main.fxml"));
+            MainController controller = new MainController(inv);
+            loader.setController(controller);
+
+            Parent root = loader.load();
             Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         }
-    }
-
-    @FXML void modProductSearchHandler(ActionEvent event) {
-        String searchedPart = modProductSearchField.getText();
-        ObservableList foundParts = Inventory.lookupPart(searchedPart);
-        addPartsTable.setItems(foundParts);
-    }
-
-    public boolean inventoryIsValid(String productStock, String productMin, String productMax) {
-        String errorMessage = "";
-        Integer intMin = null, intMax = null;
-        boolean inventoryIsValid;
-
-        try {
-            intMin =  Integer.parseInt(productMin);
-        } catch (NumberFormatException e) {
-            errorMessage += ("Min must be a number\n");
+        catch (Exception e) {
+            System.out.println(e);
         }
-
-        try {
-            intMax = Integer.parseInt(productMax);
-        } catch (NumberFormatException e) {
-            errorMessage += ("Max must be a number\n");
-        }
-
-        try {
-            if(intMin > intMax) {
-                errorMessage += ("Min must be less than max\n");
-            }
-        } catch (NullPointerException e) {
-            errorMessage += ("Enter a min and max\n");
-        }
-
-        try {
-            int intInv = Integer.parseInt(productStock);
-
-            if (intMax != null && intMin != null) {
-                if(intInv < intMin || intInv > intMax) {
-                    errorMessage += ("Inv must be between min and max\n");
-                }
-            } else {
-                errorMessage += ("Enter an Inv amount\n");
-            }
-        } catch (NumberFormatException e) {
-            errorMessage += ("Inv must be a number\n");
-        }
-
-        if (errorMessage.isEmpty()) {
-            inventoryIsValid = true;
-        } else {
-            inventoryIsValid = false;
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("MODIFY PRODUCT ERROR");
-            alert.setHeaderText("Error");
-            alert.setContentText(errorMessage);
-            alert.showAndWait();
-        }
-        return inventoryIsValid;
     }
 }
-
-
