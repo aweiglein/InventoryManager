@@ -12,38 +12,110 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="457.0" style="-fx-background-color: DDDDDD;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View_Controller.ModifyPartScreenController">
-   <children>
-      <Label layoutX="43.0" layoutY="36.0" text="Modify Part">
+<AnchorPane prefHeight="362.0" prefWidth="405.0" style="-fx-background-color: DDDDDD;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+      <Pane layoutX="9.0" layoutY="9.0" prefHeight="344.0" prefWidth="387.0" style="-fx-border-width: 1px; -fx-border-style: solid; -fx-border-radius: 10px; -fx-border-color: BBBBBB;" />
+        <Label layoutX="42.0" layoutY="36.0" text="Modify Part">
+            <font>
+                <Font name="Verdana Bold" size="14.0" />
+            </font></Label>
+        <RadioButton fx:id="inHouseRadio" layoutX="190.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#selectInHouse" text="In House">
+            <font>
+                <Font size="11.0" />
+            </font>
+         <toggleGroup>
+            <ToggleGroup fx:id="Radio" />
+         </toggleGroup>
+        </RadioButton>
+        <RadioButton fx:id="outsourcedRadio" layoutX="286.0" layoutY="39.0" mnemonicParsing="false" onMouseClicked="#selectOutsourced" text="Outsourced" toggleGroup="$Radio">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </RadioButton>
+        <Label layoutX="43.0" layoutY="80.0" text="Part ID">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Label>
+        <Label layoutX="43.0" layoutY="117.0" text="Name">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Label>
+        <Label layoutX="43.0" layoutY="156.0" text="Inventory">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Label>
+        <Label layoutX="43.0" layoutY="194.0" text="Price">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Label>
+        <Label layoutX="239.0" layoutY="231.0" text="Max">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Label>
+        <Label layoutX="43.0" layoutY="231.0" text="Min">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Label>
+        <Label fx:id="DynamicLabel" layoutX="43.0" layoutY="270.0" text="   ">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Label>
+        <TextField fx:id="modPartIDField" editable="false" layoutX="129.0" layoutY="76.0" prefWidth="236.0">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="modPartNameField" layoutX="129.0" layoutY="113.0" prefWidth="236.0">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="modPartInventoryField" layoutX="129.0" layoutY="152.0" prefWidth="236.0">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="modPartPriceField" layoutX="129.0" layoutY="190.0" prefWidth="236.0">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="modPartMinField" layoutX="129.0" layoutY="228.0" prefWidth="90.0">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="modPartMaxField" layoutX="275.0" layoutY="228.0" prefWidth="90.0">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </TextField>
+        <TextField fx:id="DynamicField" layoutX="129.0" layoutY="266.0" prefWidth="236.0">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </TextField>
+        <Button fx:id="SaveButton" layoutX="255.0" layoutY="302.0" mnemonicParsing="false" onMouseClicked="#checkInput" prefHeight="24.0" prefWidth="46.0" text="Save">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Button>
+        <Button fx:id="CancelButton" layoutX="311.0" layoutY="302.0" mnemonicParsing="false" onMouseClicked="#returnToMain" prefHeight="24.0" prefWidth="53.0" text="Cancel">
+            <font>
+                <Font size="11.0" />
+            </font>
+        </Button>
+      <Label fx:id="errorLabel" layoutX="43.0" layoutY="305.0" text="   " textFill="#930000">
          <font>
-            <Font name="Verdana Bold" size="15.0" />
+            <Font name="System Italic" size="11.0" />
          </font>
       </Label>
-      <RadioButton fx:id="inHouseRadio" layoutX="175.0" layoutY="39.0" mnemonicParsing="false" onAction="#inHouseHandler" text="In-House">
-         <toggleGroup>
-            <ToggleGroup fx:id="partOrigin" />
-         </toggleGroup>
-      </RadioButton>
-      <RadioButton fx:id="outsourcedRadio" layoutX="270.0" layoutY="39.0" mnemonicParsing="false" onAction="#outsourcedRadioHandler" selected="true" text="Outsourced" toggleGroup="$partOrigin" />
-      <Button fx:id="modPartSaveButton" layoutX="287.0" layoutY="299.0" mnemonicParsing="false" onAction="#modPartSaveHandler" onMouseClicked="#saveModifyPartHandler" prefHeight="25.0" prefWidth="52.0" text="Save" />
-      <Button fx:id="modPartCancelButton" layoutX="348.0" layoutY="299.0" mnemonicParsing="false" onAction="#modPartCancelHandler" prefHeight="25.0" prefWidth="63.0" text="Cancel" />
-      <TextField fx:id="modPartIDField" editable="false" layoutX="175.0" layoutY="76.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <TextField fx:id="modPartNameField" layoutX="175.0" layoutY="112.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <TextField fx:id="modPartInvField" layoutX="175.0" layoutY="148.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <TextField fx:id="modPartPriceField" layoutX="175.0" layoutY="185.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <TextField fx:id="modPartDynamicField" layoutX="175.0" layoutY="261.0" prefHeight="27.0" prefWidth="236.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <TextField fx:id="modPartMaxField" layoutX="175.0" layoutY="223.0" prefHeight="27.0" prefWidth="92.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <Label layoutX="288.0" layoutY="230.0" text="Min" />
-      <TextField fx:id="modPartMinField" layoutX="319.0" layoutY="223.0" prefHeight="27.0" prefWidth="92.0" style="-fx-background-color: F5F5F5; -fx-border-width: 1px; -fx-border-color: B8B8B8; -fx-border-style: solid;" />
-      <VBox layoutX="43.0" layoutY="81.0" prefHeight="229.0" prefWidth="120.0" spacing="20.0">
-         <children>
-            <Label text="ID" />
-            <Label text="Name" />
-            <Label text="Inv" />
-            <Label text="Price" />
-            <Label text="Max" />
-            <Label fx:id="modPartCompanyMachineID" text="Company Name" />
-         </children>
-      </VBox>
-   </children>
+    </children>
 </AnchorPane>
