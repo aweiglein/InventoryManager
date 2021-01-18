@@ -1,61 +1,108 @@
 package Model;
 
 /**
- * Supplied class Part.java
- * @author Alyssa Weiglein
+ * Supplied class Part
  */
 public abstract class Part {
-    private int ID;
-    private String name;
-    private double price;
-    private int stock;
-    private int min;
-    private int max;
+    protected int partID;
+    protected String name;
+    protected double price = 0.0;
+    protected int stock;
+    protected int min;
+    protected int max;
 
-    public Part(int ID, String name, double price, int stock, int min, int max) {
-        this.ID = ID;
-        this.name = name;
-        this.price = price;
-        this.stock = stock;
-        this.min = min;
-        this.max = max;
+    /**
+     * Getter for part ID
+     * @return part ID
+     */
+    public int getPartID() {
+        return partID;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    /**
+     * Setter for part ID
+     * @param partID part ID
+     */
+    public void setPartID(int partID) {
+        this.partID = partID;
     }
-    public int getID() {
-        return ID;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
+
+    /**
+     * Getter for part name
+     * @return part name
+     */
     public String getName() {
         return name;
     }
-    public void setPrice(double price) {
-        this.price = price;
+
+    /**
+     * Setter for part name
+     * @param name part name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
+
+    /**
+     * Getter for part price
+     * @return part price
+     */
     public double getPrice() {
         return price;
     }
-    public void setStock(int stock) {
-        this.stock = stock;
+
+    /**
+     * Setter for part price
+     * @param price part price
+     */
+    public void setPrice(double price) {
+        this.price = price;
     }
+
+    /**
+     * Getter for amount in stock
+     * @return amount in stock
+     */
     public int getStock() {
         return stock;
     }
-    public void setMin(int min) {
-        this.min = min;
+    /**
+     * Setter for amount in stock
+     * @param stock amount in stock
+     */
+    public void setStock(int stock) {
+        this.stock = stock;
     }
+
+    /**
+     * Getter for minimum
+     * @return minimum
+     */
     public int getMin() {
         return min;
     }
-    public void setMax(int max) {
-        this.max = max;
+
+    /**
+     * Setter for minimum
+     * @param min minimum
+     */
+    public void setMin(int min) {
+        this.min = min;
     }
+
+    /**
+     * Getter for maximum
+     * @return maximum
+     */
     public int getMax() {
         return max;
     }
 
+    /**
+     * Setter for maximum
+     * @param max maximum
+     */
+    public void setMax(int max) {
+        this.max = max;
+    }
 }
