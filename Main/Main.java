@@ -1,5 +1,5 @@
 /**
- * @author Alyssa Weiglein
+ * @author Alyssa Wright
  * Inventory Management System
  */
 
