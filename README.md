@@ -14,8 +14,8 @@ Java desktop program used to manage inventory parts and products.
     <li>Create classes with data and logic that map to the UML class diagram and include the supplied Part class. Code should demonstrate inheritance, abstract and concrete classes, instance and static variables, and instance and static methods.</li>
   </ul>
   
-Add the following functionalities to the Main form:
-<u>The Parts pane</u>
+<b>Add the following functionalities to the Main form:</b>
+The Parts pane<br>
   <ul>
     <li>The Add button under the Parts TableView opens the Add Part form.</li>
     <li>The Modify button under the Parts TableView opens the Modify Part form.</li>
