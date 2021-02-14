@@ -7,14 +7,15 @@ Java desktop program used to manage inventory parts and products.
 <img src="VideoCapture.gif"></img>
   </kbd>
 </p>
+<br><br>
 
 <h2>Project Requirements</h2>
   <ul>
     <li>JavaFX User Interface must contain Main form, Add Part form, Modify Part form, Add Product form, and Modify Product form componenets.</li>
     <li>Create classes with data and logic that map to the UML class diagram and include the supplied Part class. Code should demonstrate inheritance, abstract and concrete classes, instance and static variables, and instance and static methods.</li>
   </ul>
-  
-<b>Add the following functionalities to the Main form:</b>
+  <br>
+<b>Add the following functionalities to the Main form:</b><br>
 The Parts pane<br>
   <ul>
     <li>The Add button under the Parts TableView opens the Add Part form.</li>
