@@ -1,16 +1,17 @@
-# Inventory Manager
-<a href="https://requires.io/github/vitorfs/bootcamp/requirements/?branch=master"><img src="https://requires.io/github/vitorfs/bootcamp/requirements.svg?branch=master" alt="Requirements Status" /></a>
-
-Java desktop program that simulates an inventory system of parts and products.
-<br><br>
-
+<h1>Inventory Manager</h1>
 <p align="center">
   <kbd>
 <img src="VideoCapture.gif"></img>
   </kbd>
 </p>
 <br><br>
+Java desktop program that simulates an inventory system of parts and products.
+<br><br>
 
+<h2>Features</h2>
+*One
+*Two
+*Three
 
 <h2>The Challenge</h2>
   <p>You are working for a small manufacturing organization that has outgrown its current inventory system. Members of the organization have been using a spreadsheet program to manually enter inventory additions, deletions, and other data from a paper-based system but would now like you to develop a more sophisticated inventory program.
@@ -36,10 +37,4 @@ The Parts pane<br>
     <li>If the search field is set to empty, the table should be repopulated with all available parts.</li>    
   </ul>
 <br><br>
-
-
-<h2>The Solution</h2>
-<ul>
-  </li></li>
-</ul>
 
