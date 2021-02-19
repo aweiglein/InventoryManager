@@ -1,10 +1,10 @@
-<h1>Inventory Manager</h1>
 <p align="center">
   <kbd>
 <img src="VideoCapture.gif"></img>
   </kbd>
 </p>
-<br><br>
+<br>
+<h1>Inventory Manager</h1><br>
 Java desktop program that simulates an inventory system of parts and products.
 <br><br>
 
