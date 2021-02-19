@@ -1,4 +1,6 @@
 # Inventory Manager
+<a href="https://requires.io/github/vitorfs/bootcamp/requirements/?branch=master"><img src="https://requires.io/github/vitorfs/bootcamp/requirements.svg?branch=master" alt="Requirements Status" /></a>
+
 Java desktop program that simulates an inventory system of parts and products.
 <br><br>
 
