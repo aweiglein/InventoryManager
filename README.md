@@ -1,5 +1,5 @@
 <h1>Inventory Manager</h1>
-Java desktop program that simulates an inventory system of parts and products.<br>
+Java desktop program that simulates an inventory system of parts and products.<br><br>
 
 <p align="center">
   <kbd>
