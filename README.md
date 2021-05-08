@@ -3,7 +3,7 @@ A Java desktop program that simulates an inventory system with the ability to ad
 
 <p align="center">
   <kbd>
-<img src="Inventory.gif"></img>
+<img src="InventorySys.gif"></img>
   </kbd>
 </p>
 <br>
